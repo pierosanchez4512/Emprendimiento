@@ -115,10 +115,9 @@ st.markdown('''
 </div>
 ''', unsafe_allow_html=True)
 
-# Configuración en la barra lateral
-st.sidebar.header("🔑 Conexión Roboflow")
-roboflow_key = st.sidebar.text_input("Roboflow API Key", value="", type="password", help="Ingresa tu API Key de Roboflow Universe").strip()
-version_modelo = st.sidebar.number_input("Versión del Proyecto", min_value=1, max_value=10, value=1)
+# Variables de Roboflow estáticas (sin barra lateral)
+roboflow_key = ""
+version_modelo = 1
 
 # ==========================================
 # PALETA DE COLORES (ORDEN DE CONSUMO)
@@ -301,7 +300,7 @@ if uploaded_file is not None:
                     error_rf = str(e)
 
         if platanos_brutos:
-            st.sidebar.success("✅ Conectado a Roboflow (banana-8uvoq)")
+            st.success("✅ Conectado a Roboflow (banana-8uvoq)")
             for pred in platanos_brutos:
                 x, y, w, h = int(pred['x']), int(pred['y']), int(pred['width']), int(pred['height'])
                 x1, y1 = max(0, x - w // 2), max(0, y - h // 2)
@@ -325,9 +324,9 @@ if uploaded_file is not None:
         else:
             if roboflow_key:
                 if error_rf:
-                    st.sidebar.error(f"❌ Error Roboflow: {error_rf}")
+                    st.error(f"❌ Error Roboflow: {error_rf}")
                 else:
-                    st.sidebar.warning("⚠️ Roboflow no devolvió detecciones. Usando respaldo con segmentación individual.")
+                    st.warning("⚠️ Roboflow no devolvió detecciones. Usando respaldo con segmentación individual.")
             
             if os.path.exists("banana_8uvoq.pt"):
                 model_local = YOLO("banana_8uvoq.pt")
